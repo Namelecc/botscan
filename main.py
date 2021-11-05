@@ -64,7 +64,8 @@ submit_btn.grid(column = 0, row = 5)
 
 def lichess_it():
     try: 
-        game = links.get(links.curselection())[3:11]
+        stuff = links.get(links.curselection()).replace(",", "")
+        game = stuff.split()[1]
         webbrowser.open_new(f"https://lichess.org/{game}")
     except:
         pass
