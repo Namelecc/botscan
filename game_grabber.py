@@ -9,12 +9,12 @@ def scan(a, b, c, d):
     variants = {"ultraBullet", "bullet", "blitz", "rapid", "classical", "correspondence", "chess960", "crazyhouse", "antichess", "atomic", "horde", "kingOfTheHill", "racingKings", "threeCheck"}
     standard = {"ultraBullet", "bullet", "blitz", "rapid", "classical"}
     if variant not in variants:
-        raise ValueError("Not a possible input")
+        raise NameError("Not a possible input")
     speed = c
     if variant in standard:
         speed = variant
     if speed not in standard:
-       raise ValueError("Not a possible input") 
+       raise NameError("Not a possible input") 
     min_opponent = 0
     try:
         min_opponent = int(d)
@@ -32,9 +32,9 @@ def scan(a, b, c, d):
     stuff = request.iter_lines()
     coefficient = []
     games = []
-
     for x in stuff:
         game = json.loads(x)
+        
         try:
             if game['speed'] == speed:
                 initial = game['clock']['initial']
@@ -98,6 +98,8 @@ def scan(a, b, c, d):
                             games.append(game["id"])
         except:
             pass
+    if len(games) == 0: 
+        raise IndexError("No games found")
     for repetition in range(len(games)):
         for x in range(len(games)):
             first = coefficient[repetition]
@@ -116,4 +118,5 @@ def scan(a, b, c, d):
         except:
             pass
     return (final_games, final_coefficient)
+
 
