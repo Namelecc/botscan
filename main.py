@@ -2,6 +2,7 @@ from tkinter import *
 import game_grabber as gg
 import sys
 import webbrowser
+import threading
  
 root = Tk()
 root.title("BotScan")
@@ -33,7 +34,7 @@ rating_text = StringVar()
 rating_entry = Entry(root, textvariable = rating_text, bg = "gray90")
 rating_entry.grid(column = 1, row = 4)
 
-msg = Label(root, text = "Patience")
+msg = Label(root, text = "")
 msg.grid(column = 1, row = 5)
 
 links = Listbox(root, bg = "gray90", fg = "RoyalBlue")
@@ -45,20 +46,27 @@ scrollbar.config(command = links.yview)
 
 exit_btn = Button(root, text = "Exit", fg = "red", command = sys.exit)
 exit_btn.grid(column = 0, row = 6, sticky = N)
-
+def getdata():
+    return gg.scan(user_text.get(), variant_text.get(), speed_text.get(), rating_text.get())
 
 def submit():
     try:
+        msg.config(text = "Crunching numbers...", fg = "yellow4")
         data = gg.scan(user_text.get(), variant_text.get(), speed_text.get(), rating_text.get())
         links.delete(0, links.size())
         for x in range(0, len(data[0])):
             links.insert(END, f"{x+1}. {data[0][x]}, {round(data[1][x], 3)}")
         msg.config(text = "Done!", fg = "green")
+    except ValueError:
+        msg.config(text = "Check inputs and resubmit", fg = "red")
     except:
-        msg.config(text = "Error", fg = "red")
+        msg.config(text = "Some other error", fg = "red")
 
+def make_daemon():
+    x = threading.Thread(target = submit, daemon = True)
+    x.start()
 
-submit_btn = Button(root, text = "Submit", fg = "green", command = submit)
+submit_btn = Button(root, text = "Submit", fg = "green", command = make_daemon)
 submit_btn.grid(column = 0, row = 5)
 
 def lichess_it():
