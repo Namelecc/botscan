@@ -57,8 +57,10 @@ def submit():
         for x in range(0, len(data[0])):
             links.insert(END, f"{x+1}. {data[0][x]}, {round(data[1][x], 3)}")
         msg.config(text = "Done!", fg = "green")
-    except ValueError:
+    except NameError:
         msg.config(text = "Check inputs and resubmit", fg = "red")
+    except IndexError:
+        msg.config(text = "No games found", fg = "red")
     except:
         msg.config(text = "Some other error", fg = "red")
 
@@ -76,7 +78,6 @@ def lichess_it():
         webbrowser.open_new(f"https://lichess.org/{game}")
     except:
         pass
-
 
 link_btn = Button(root, text = "Open", fg = "green", command = lichess_it)
 link_btn.grid(column = 1, row = 7)
