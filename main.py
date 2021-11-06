@@ -50,7 +50,6 @@ exit_btn.grid(column = 0, row = 6, sticky = N)
 def submit():
     try:
         data = gg.scan(user_text.get(), variant_text.get(), speed_text.get(), rating_text.get())
-        print(data)
         links.delete(0, links.size())
         for x in range(0, len(data[0])):
             links.insert(END, f"{x+1}. {data[0][x]}, {round(data[1][x], 3)}")
