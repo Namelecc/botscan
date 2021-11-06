@@ -6,10 +6,15 @@ def scan(a, b, c, d):
     username = a.casefold()
     move_minimums = 10
     variant = b
+    variants = {"ultraBullet", "bullet", "blitz", "rapid", "classical", "correspondence", "chess960", "crazyhouse", "antichess", "atomic", "horde", "kingOfTheHill", "racingKings", "threeCheck"}
     standard = {"ultraBullet", "bullet", "blitz", "rapid", "classical"}
+    if variant not in variants:
+        raise ValueError("Not a possible input")
     speed = c
     if variant in standard:
         speed = variant
+    if speed not in standard:
+       raise ValueError("Not a possible input") 
     min_opponent = 0
     try:
         min_opponent = int(d)
@@ -111,3 +116,4 @@ def scan(a, b, c, d):
         except:
             pass
     return (final_games, final_coefficient)
+
