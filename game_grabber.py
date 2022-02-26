@@ -1,10 +1,13 @@
 import requests as req
 import json
 import statistics as stat
+
+APIToken = "TOKEN HERE" #If you are using a token, put it here. Tokens speed up the process as unverified requests are limited to 20 games per second.
+
 def scan(a, b, c, d):
     
     username = a.casefold()
-    move_minimums = 10
+    move_minimums = 15
     variant = b
     variants = {"ultraBullet", "bullet", "blitz", "rapid", "classical", "correspondence", "chess960", "crazyhouse", "antichess", "atomic", "horde", "kingOfTheHill", "racingKings", "threeCheck"}
     standard = {"ultraBullet", "bullet", "blitz", "rapid", "classical"}
@@ -26,8 +29,8 @@ def scan(a, b, c, d):
     request = req.get(
         url,
         params={"rated":"true", "perfType":variant, "analysed":"true", "pgnInJson":"true", "clocks":"true","evals":"True"},
-        # "max":1000, 
-        headers={"Accept": "application/x-ndjson"}
+        # "max":1000     You can add this argument if you want to limit the number of games searched.
+        headers={"Authorization": f"Bearer {APIToken}", "Accept": "application/x-ndjson"} #Delete this if not using a token
     )
     stuff = request.iter_lines()
     coefficient = []
@@ -118,5 +121,6 @@ def scan(a, b, c, d):
         except:
             pass
     return (final_games, final_coefficient)
+
 
 
